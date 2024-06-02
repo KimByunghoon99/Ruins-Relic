@@ -73,8 +73,11 @@ Plugins/*/Intermediate/*
 # Cache files for the editor to use
 DerivedDataCache/*
 
-#에셋 무시
+# Personal Ignore
+Intermediate/
+Saved/
 
+#ignore assets
 Gothic_Cathedral/
 Ancient_Golem/
 Watermills/
