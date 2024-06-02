@@ -38,6 +38,9 @@ class AProject_RRCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* LookAction;
 
+	class UStatusComponent* StatusComponent;
+
+
 
 public:
 	AProject_RRCharacter();

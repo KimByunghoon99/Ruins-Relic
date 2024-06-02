@@ -10,6 +10,8 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 
+#include "StatusComponent.h"
+
 
 //////////////////////////////////////////////////////////////////////////
 // AProject_RRCharacter
@@ -39,7 +41,7 @@ AProject_RRCharacter::AProject_RRCharacter()
 	// Create a camera boom (pulls in towards the player if there is a collision)
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
-	CameraBoom->TargetArmLength =650.0f; // The camera follows at this distance behind the character	
+	CameraBoom->TargetArmLength =700.0f; // The camera follows at this distance behind the character	
 	CameraBoom->SetRelativeRotation(FRotator(-65.f, 0.f, 0.f));
 	CameraBoom->bUsePawnControlRotation = false; // Rotate the arm based on the controller
 	CameraBoom->bInheritPitch = false;
@@ -53,6 +55,9 @@ AProject_RRCharacter::AProject_RRCharacter()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
+
+	StatusComponent = CreateDefaultSubobject<UStatusComponent>(TEXT("StatusComponent")); 
+
 }
 
 void AProject_RRCharacter::BeginPlay()
