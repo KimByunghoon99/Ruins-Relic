@@ -87,8 +87,6 @@ void AProject_RRCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 		//Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AProject_RRCharacter::Move);
 
-		//Looking
-		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AProject_RRCharacter::Look);
 	}
 
 }
@@ -117,18 +115,6 @@ void AProject_RRCharacter::Move(const FInputActionValue& Value)
 }
 
 
-void AProject_RRCharacter::Look(const FInputActionValue& Value)
-{
-	// input is a Vector2D
-	FVector2D LookAxisVector = Value.Get<FVector2D>();
-
-	if (Controller != nullptr)
-	{
-		// add yaw and pitch input to controller
-		AddControllerYawInput(LookAxisVector.X);
-		AddControllerPitchInput(LookAxisVector.Y);
-	}
-}
 
 
 
