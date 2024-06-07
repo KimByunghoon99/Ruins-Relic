@@ -11,15 +11,21 @@
 #include "FunctionLibrary.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Misc/OutputDeviceNull.h"
+#include "StatusComponent.h"
+#include "Project_RRGameMode.h"
 
 // Sets default values
 AEnemy::AEnemy()
 {
-	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	SightSource = CreateDefaultSubobject<USceneComponent>(TEXT("Sight Source"));
 	SightSource->SetupAttachment(RootComponent);
+
+	StatusComponent = CreateDefaultSubobject<UStatusComponent>(TEXT("StatusComponent"));
+
+	MaxHealth = 80.0f;
+    AttackDamage = 10.0f; // 기본 공격 데미지
 }
 
 // Called when the game starts or when spawned
@@ -27,6 +33,11 @@ void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// BeginPlay에서 StatusComponent의 체력 값을 설정.
+	if (StatusComponent)
+	{
+		StatusComponent->SetHealth(MaxHealth);
+	}
 }
 
 // Called every frame
@@ -135,4 +146,34 @@ void AEnemy::Melee()
 	Projectile->GetProjectileMovementComponent()->InitialSpeed = 1000.f;
 	Projectile->FinishSpawning(SpawnTransform);
 
+}
+
+float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	float ActualDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+
+	if (StatusComponent)
+	{
+		StatusComponent->LoseHealth(ActualDamage);
+	}
+
+	return ActualDamage;
+}
+
+void AEnemy::Destroyed()
+{
+	Super::Destroyed();
+
+	// 게임 모드에 적이 파괴되었음을 알림
+	AProject_RRGameMode* GameMode = Cast<AProject_RRGameMode>(GetWorld()->GetAuthGameMode());
+	if (GameMode)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Enemy Destroyed - Notifying GameMode"));
+		GameMode->EnemyDestroyed();
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Failed to get GameMode"));
+	}
+	
 }

@@ -4,6 +4,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
+#include "Components/SphereComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -11,6 +12,7 @@
 #include "EnhancedInputSubsystems.h"
 
 #include "StatusComponent.h"
+#include "Enemy_Dummy.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -32,7 +34,7 @@ AProject_RRCharacter::AProject_RRCharacter()
 
 	// Note: For faster iteration times these variables, and many more, can be tweaked in the Character Blueprint
 	// instead of recompiling to adjust them
-	GetCharacterMovement()->JumpZVelocity = 700.f;
+	GetCharacterMovement()->JumpZVelocity = 1200.f;
 	GetCharacterMovement()->AirControl = 0.35f;
 	GetCharacterMovement()->MaxWalkSpeed = 500.f;
 	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
@@ -56,7 +58,11 @@ AProject_RRCharacter::AProject_RRCharacter()
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 
-	StatusComponent = CreateDefaultSubobject<UStatusComponent>(TEXT("StatusComponent")); 
+
+	MaxHealth = 100.0f;
+	Health = MaxHealth;
+
+	AttackDamage = 20.0f; // 기본 공격 데미지
 
 }
 
@@ -114,8 +120,29 @@ void AProject_RRCharacter::Move(const FInputActionValue& Value)
 	}
 }
 
+void AProject_RRCharacter::OnAttackOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (OtherActor && (OtherActor != this))
+	{
+		UStatusComponent* StatusComp = OtherActor->FindComponentByClass<UStatusComponent>();
+		if (StatusComp)
+		{
+			StatusComp->LoseHealth(AttackDamage);
+		}
+	}
+}
 
 
+float AProject_RRCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	float ActualDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 
+	if (StatusComponent)
+	{
+		StatusComponent->LoseHealth(ActualDamage);
+	}
+
+	return ActualDamage;
+}
 
 

@@ -11,7 +11,8 @@ UStatusComponent::UStatusComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = false;
 
-	// ...
+	MaxHealth = 100.0f; // 최대 체력 값
+	Health = MaxHealth; // 체력 값
 }
 
 
@@ -19,9 +20,6 @@ UStatusComponent::UStatusComponent()
 void UStatusComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// ...
-	
 }
 
 
@@ -29,43 +27,37 @@ void UStatusComponent::BeginPlay()
 void UStatusComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
 }
 
-void UStatusComponent::LoseHealth(float Amount)
+void UStatusComponent::LoseHealth(float Damage)
 {
-	Health -= Amount;
+	Health -= Damage;
 	
 	if (Health <= 0.f)
 	{
+		Health = 0.0f;
 
+		GetOwner()->Destroy(); // 체력 0이면 엑터 파괴
 	}
 }
 
-void UStatusComponent::GainMaxHealth(float Amount)
-{
-	MaxHP += Amount;
-	Health = MaxHP;
-}
 
 void UStatusComponent::LoseStamina(float Amount)
 {
 	Stamina -= Amount;
 	
-	if (Health <= 0.f) 
+	if (Stamina <= 0.f) 
 	{
 
 	}
 }
 
-void UStatusComponent::GainMaxStamina(float Amount)
+void UStatusComponent::SetHealth(float NewHealth)
 {
-	Health += Stamina;
-	Stamina = MaxSP;
+	Health = NewHealth;
 }
 
-void UStatusComponent::DamageUP(float Amount)
+void UStatusComponent::SetStamina(float NewStamina)
 {
-	Damage += Amount;
+	Stamina = NewStamina;
 }
