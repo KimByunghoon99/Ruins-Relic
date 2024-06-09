@@ -63,36 +63,39 @@ bool AEnemy::LookAtActor(AActor* TargetActor)
 		TargetActor,
 		IgnoreActors))
 	{
-		FVector Start = GetActorLocation();
-		FVector End = TargetActor->GetActorLocation();
-		// Calculate the necessary rotation for the Start point to face the End point
-		FRotator LookAtRotation = UKismetMathLibrary::FindLookAtRotation(Start, End);
-
-		//Set the enemy's rotation to that rotation
-		SetActorRotation(LookAtRotation);
-
-		double distance = FVector::Dist(this->GetActorLocation(), TargetActor->GetActorLocation());
-
-		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("%f"), distance));
-
-		if (distance < 500 && IsAttacking == false)
+		if (GettingHit == false)
 		{
-			FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::X);
-			AddMovementInput(Direction, 0.5);
-		}
+			FVector Start = GetActorLocation();
+			FVector End = TargetActor->GetActorLocation();
+			// Calculate the necessary rotation for the Start point to face the End point
+			FRotator LookAtRotation = UKismetMathLibrary::FindLookAtRotation(Start, End);
 
-		if (distance < 150)
-		{
-			FOutputDeviceNull Ar;
-			CallFunctionByNameWithArguments(TEXT("AttackStart"), Ar, nullptr, true);
-		}
+			//Set the enemy's rotation to that rotation
+			SetActorRotation(LookAtRotation);
 
-		if (AttackBall == true)
-		{
-			Melee();
+			double distance = FVector::Dist(this->GetActorLocation(), TargetActor->GetActorLocation());
+
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("%f"), distance));
+
+			if (distance < ComeDistance && IsAttacking == false)
+			{
+				FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::X);
+				AddMovementInput(Direction, MoveSpeed);
+			}
+
+			if (distance < 150)
+			{
+				FOutputDeviceNull Ar;
+				CallFunctionByNameWithArguments(TEXT("AttackStart"), Ar, nullptr, true);
+			}
+
+			if (AttackBall == true)
+			{
+				Melee();
+			}
+			AttackBall = false;
+			return true;
 		}
-		AttackBall = false;
-		return true;
 	}
 	return false;
 

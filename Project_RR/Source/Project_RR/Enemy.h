@@ -21,6 +21,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	bool AttackBall = false;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	bool GettingHit = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float MoveSpeed = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float ComeDistance = 0;
+
 	virtual void Destroyed() override; //파괴시 호출되는 함수
 
 private:
