@@ -5,6 +5,7 @@
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Project_RRCharacter.h"
+#include "StatusComponent.h"
 
 // Sets default values
 AAttack_Enemy::AAttack_Enemy()
@@ -15,13 +16,8 @@ AAttack_Enemy::AAttack_Enemy()
 	SphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere Collision"));
 	SphereComponent->SetSphereRadius(35.f);
 	SphereComponent->SetSimulatePhysics(true);
-	//Simulation generates Hit events
 	SphereComponent->SetNotifyRigidBodyCollision(true);
-	// Listen to the OnComponentHit event by binding it to our function
-	//SphereComponent->OnComponentHit.AddDynamic(this, &AAttack_Enemy::OnHit);
 
-	// Set this Sphere Component as the root component,
-	// otherwise collision won't behave properly
 	RootComponent = SphereComponent;
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Movement"));
@@ -45,16 +41,26 @@ void AAttack_Enemy::Tick(float DeltaTime)
 
 }
 
+
 void AAttack_Enemy::OnHit(UPrimitiveComponent* HitComp,
 	AActor* OtherActor,
 	UPrimitiveComponent* OtherComp,
 	FVector NormalImpulse,
 	const FHitResult& Hit)
 {
-	if (Cast<AProject_RRCharacter>(OtherActor) != nullptr)
+	AProject_RRCharacter* PlayerCharacter = Cast<AProject_RRCharacter>(OtherActor);
+	if (PlayerCharacter)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Attacked")));
+		// 플레이어의 StatusComponent를 찾아 체력을 감소시킨다.
+		UStatusComponent* StatusComp = PlayerCharacter->FindComponentByClass<UStatusComponent>();
+		if (StatusComp)
+		{
+			StatusComp->LoseHealth(AttackDamage, this);
+		}
+		else
+		{
+
+		}
 		Destroy();
 	}
-	
 }

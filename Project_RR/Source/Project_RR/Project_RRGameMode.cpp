@@ -4,6 +4,7 @@
 #include "Project_RRCharacter.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Enemy.h"
+#include "Portal.h"
 #include "Kismet/GameplayStatics.h"
 
 AProject_RRGameMode::AProject_RRGameMode()

@@ -26,6 +26,8 @@ public:
 	UPROPERTY(EditAnywhere)
 	class UBoxComponent* CollisionBox;
 
+	void ShowPortal();
+
 	UPROPERTY(EditAnywhere)
 	FName LevelName; // 이동할 레벨
 

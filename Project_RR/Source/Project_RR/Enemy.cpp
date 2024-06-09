@@ -22,22 +22,13 @@ AEnemy::AEnemy()
 	SightSource = CreateDefaultSubobject<USceneComponent>(TEXT("Sight Source"));
 	SightSource->SetupAttachment(RootComponent);
 
-	StatusComponent = CreateDefaultSubobject<UStatusComponent>(TEXT("StatusComponent"));
-
-	MaxHealth = 80.0f;
-    AttackDamage = 10.0f; // 기본 공격 데미지
+	AttackDamage = 10.0f;
 }
 
 // Called when the game starts or when spawned
 void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// BeginPlay에서 StatusComponent의 체력 값을 설정.
-	if (StatusComponent)
-	{
-		StatusComponent->SetHealth(MaxHealth);
-	}
 }
 
 // Called every frame
@@ -50,27 +41,6 @@ void AEnemy::Tick(float DeltaTime)
 
 	// Look at the player character every frame
 	bCanSeePlayer = LookAtActor(PlayerCharacter);
-
-	/*
-	if (bCanSeePlayer != bPreviousCanSeePlayer)
-	{
-		if (bCanSeePlayer)
-		{
-			//Start throwing dodgeballs
-			GetWorldTimerManager().SetTimer(ThrowTimerHandle,
-				this,
-				&AEnemy::Melee,
-				ThrowingInterval,
-				true,
-				ThrowingDelay);
-		}
-		else
-		{
-			//Stop throwing dodgeballs
-			GetWorldTimerManager().ClearTimer(ThrowTimerHandle);
-		}
-	}
-	*/
 
 	bPreviousCanSeePlayer = bCanSeePlayer;
 
@@ -143,6 +113,7 @@ void AEnemy::Melee()
 	//Spawn new dodgeball
 	AAttack_Enemy* Projectile = GetWorld()->SpawnActorDeferred<AAttack_Enemy>(AttackClass, SpawnTransform);
 
+
 	Projectile->GetProjectileMovementComponent()->InitialSpeed = 1000.f;
 	Projectile->FinishSpawning(SpawnTransform);
 
@@ -154,7 +125,7 @@ float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AC
 
 	if (StatusComponent)
 	{
-		StatusComponent->LoseHealth(ActualDamage);
+		StatusComponent->LoseHealth(ActualDamage, DamageCauser);
 	}
 
 	return ActualDamage;

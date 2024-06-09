@@ -55,13 +55,12 @@ AProject_RRCharacter::AProject_RRCharacter()
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
-	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
-	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 
+	// StatusComponent 초기화
+	StatusComponent = CreateDefaultSubobject<UStatusComponent>(TEXT("StatusComponent"));
 
-	MaxHealth = 100.0f;
-	Health = MaxHealth;
-
+	Health = 100.0f;
+	MaxHealth = 100.f;
 	AttackDamage = 20.0f; // 기본 공격 데미지
 
 }
@@ -127,7 +126,7 @@ void AProject_RRCharacter::OnAttackOverlap(UPrimitiveComponent* OverlappedComp, 
 		UStatusComponent* StatusComp = OtherActor->FindComponentByClass<UStatusComponent>();
 		if (StatusComp)
 		{
-			StatusComp->LoseHealth(AttackDamage);
+			StatusComp->LoseHealth(AttackDamage, this);
 		}
 	}
 }
@@ -139,7 +138,7 @@ float AProject_RRCharacter::TakeDamage(float DamageAmount, FDamageEvent const& D
 
 	if (StatusComponent)
 	{
-		StatusComponent->LoseHealth(ActualDamage);
+		StatusComponent->LoseHealth(ActualDamage, DamageCauser);
 	}
 
 	return ActualDamage;

@@ -44,7 +44,10 @@ protected:
 
 	FTimerHandle ThrowTimerHandle;
 
-	float ThrowingInterval = 0.5f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
+	float ThrowingInterval = 0.2f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
 	float ThrowingDelay = 0.5f;
 
 	//The class used to spawn a dodgeball object
@@ -64,6 +67,9 @@ public:
 	//적 캐릭터의 초기값
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
 	float MaxHealth;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
+	float Health;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
 	float AttackDamage; //공격력

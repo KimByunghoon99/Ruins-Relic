@@ -24,12 +24,13 @@ APortal::APortal()
 void APortal::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	;
 }
+
 
 void APortal::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (OtherActor && OtherActor->IsA(AProject_RRCharacter::StaticClass())) // Replace with your player character class
+	if (OtherActor && OtherActor->IsA(AProject_RRCharacter::StaticClass())) 
 	{
 		UGameplayStatics::OpenLevel(this, LevelName);
 	}

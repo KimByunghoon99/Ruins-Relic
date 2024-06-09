@@ -24,13 +24,6 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Status")
 	float Health;
 
-	// 기본 스태미나 값
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Status")
-	float MaxStamina;
-
-	//현재 스태미나 값
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Status")
-	float Stamina;
 
 
 protected:
@@ -43,27 +36,14 @@ public:
 
 	// 체력 감소 함수
 	UFUNCTION(BlueprintCallable, Category = "Status") 	
-	void LoseHealth(float Damage);
-
-	// 스태미나 감소 함수
-	UFUNCTION(BlueprintCallable, Category = "Status")
-	void LoseStamina(float Amount); 
+	void LoseHealth(float Damage, AActor* DamageCauser);
 
 	UFUNCTION(BlueprintCallable, Category = "Status")
 	void SetHealth(float NewHealth);
-
-	UFUNCTION(BlueprintCallable, Category = "Status")
-	void SetStamina(float NewStamina);
 
 	UFUNCTION(BlueprintCallable, Category = "Status")
 	float GetHealth() const { return Health; }
 
 	UFUNCTION(BlueprintCallable, Category = "Status")
 	float GetMaxHealth() const { return MaxHealth; }
-
-	UFUNCTION(BlueprintCallable, Category = "Status")
-	float GetStamina() const { return Stamina; }
-
-	UFUNCTION(BlueprintCallable, Category = "Status")
-	float GetMaxStamina() const { return MaxStamina; }
 };

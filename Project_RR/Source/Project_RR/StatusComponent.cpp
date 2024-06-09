@@ -3,6 +3,8 @@
 
 #include "StatusComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Enemy.h"
+#include "Project_RRCharacter.h"
 
 // Sets default values for this component's properties
 UStatusComponent::UStatusComponent()
@@ -11,8 +13,8 @@ UStatusComponent::UStatusComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = false;
 
-	MaxHealth = 100.0f; // 최대 체력 값
-	Health = MaxHealth; // 체력 값
+    MaxHealth = 100.0f; // 기본 최대 체력 값
+    Health = MaxHealth; // 초기 체력 값을 최대 체력 값으로 설정
 }
 
 
@@ -20,6 +22,9 @@ UStatusComponent::UStatusComponent()
 void UStatusComponent::BeginPlay()
 {
 	Super::BeginPlay();
+    
+    // BeginPlay에서 현재 체력을 최대 체력 값으로 초기화
+    Health = MaxHealth;
 }
 
 
@@ -29,35 +34,45 @@ void UStatusComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
-void UStatusComponent::LoseHealth(float Damage)
+void UStatusComponent::LoseHealth(float Damage, AActor* DamageCauser)
 {
 	Health -= Damage;
+    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Health after damage: %f"), Health));
 	
 	if (Health <= 0.f)
 	{
-		Health = 0.0f;
+        Health = 0.0f;
 
-		GetOwner()->Destroy(); // 체력 0이면 엑터 파괴
+        if (DamageCauser)
+        {
+            if (DamageCauser->IsA(AEnemy::StaticClass()))
+            {
+                UE_LOG(LogTemp, Warning, TEXT("Killed by Enemy"));
+                // 플레이어가 적에 의해 사망
+            }
+            else if (DamageCauser->IsA(AProject_RRCharacter::StaticClass()))
+            {
+                UE_LOG(LogTemp, Warning, TEXT("Killed by Player"));
+                // 적이 플레이어에 의해 사망
+                GetOwner()->Destroy();
+            }
+        }
+    }
+    else
+    {
+        if (DamageCauser)
+        {
+            if (DamageCauser->IsA(AEnemy::StaticClass()))
+            {
+                UE_LOG(LogTemp, Warning, TEXT("Health: %f"), Health);
+            }
+        }
 	}
 }
 
-
-void UStatusComponent::LoseStamina(float Amount)
-{
-	Stamina -= Amount;
-	
-	if (Stamina <= 0.f) 
-	{
-
-	}
-}
 
 void UStatusComponent::SetHealth(float NewHealth)
 {
 	Health = NewHealth;
 }
 
-void UStatusComponent::SetStamina(float NewStamina)
-{
-	Stamina = NewStamina;
-}

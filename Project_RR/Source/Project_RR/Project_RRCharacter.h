@@ -48,21 +48,13 @@ public:
 	class UStatusComponent* StatusComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
+	float Health;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
+	float MaxHealth;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
 	float AttackDamage; //공격력
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
-	float MaxHealth; //초기 체력
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
-	float Health; //현재 체력
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
-	float MaxStamina; //초기 스테미나
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
-	float Stamina; //현재 스테미나
-
-
 
 	UFUNCTION()
 	void OnAttackOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);

@@ -31,6 +31,7 @@ public:
     UPROPERTY(BlueprintAssignable, Category = "GameMode")
     FOnAllEnemiesDestroyed OnAllEnemiesDestroyed;  // 모든 적이 파괴되었을 때 호출되는 Delegate
 
+
 private:
     int32 TotalEnemies;
     int32 DestroyedEnemies;

@@ -36,6 +36,10 @@ public:
 		return ProjectileMovement;
 	}
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attack")
+	float AttackDamage;
+
+
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComp,
 		AActor* OtherActor,
