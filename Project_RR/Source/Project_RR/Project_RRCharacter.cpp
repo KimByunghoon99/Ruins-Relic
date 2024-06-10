@@ -151,7 +151,7 @@ float AProject_RRCharacter::TakeDamage(float DamageAmount, FDamageEvent const& D
 
 void AProject_RRCharacter::IncreaseRandomStat()
 {
-	int32 RandomStat = FMath::RandRange(0, 5); 
+	RandomStat = FMath::RandRange(0, 5); 
 	if (RandomStat == 0)
 	{
 		// 체력 증가
