@@ -59,6 +59,16 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
 	float AttackSpeed; // 공격 속도
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
+	float DodgeCoolDown; // 구르기 쿨타임 
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
+	float WhirlwindCoolDown; //휠인드 쿨타임
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
+	float TornadoCoolDown; //토네이도 쿨타임
+
+
 
 	UFUNCTION()
 	void OnAttackOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);

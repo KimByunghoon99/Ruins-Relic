@@ -61,8 +61,11 @@ AProject_RRCharacter::AProject_RRCharacter()
 	Health = 100.0f;
 	MaxHealth = Health;
 
-	AttackDamage = 20.0f; // 기본 공격 데미지
-	AttackSpeed = 1.0f; //기본 공격 속도
+	AttackDamage = 20.0f; 
+	AttackSpeed = 1.0f; 
+	DodgeCoolDown = 4.0f; 
+	WhirlwindCoolDown = 20.0f;
+	TornadoCoolDown = 30.0f;
 }
 
 void AProject_RRCharacter::BeginPlay()
@@ -148,7 +151,7 @@ float AProject_RRCharacter::TakeDamage(float DamageAmount, FDamageEvent const& D
 
 void AProject_RRCharacter::IncreaseRandomStat()
 {
-	int32 RandomStat = FMath::RandRange(0, 2); // 0 또는 1 중 하나를 무작위로 선택
+	int32 RandomStat = FMath::RandRange(0, 5); 
 	if (RandomStat == 0)
 	{
 		// 체력 증가
@@ -169,6 +172,22 @@ void AProject_RRCharacter::IncreaseRandomStat()
 		//공격 속도 증가
 		AttackSpeed += 0.25f;
 	}
+
+	else if (RandomStat == 3)
+	{
+		//구르기 쿨타임 감소
+		DodgeCoolDown -= 0.5f;
+	}
+	else if (RandomStat == 4)
+	{
+		//휠윈드 쿨타임 감소
+		WhirlwindCoolDown -= 5.0f;
+	}
+	else if (RandomStat == 5)
+	{
+		//토네이도 쿨타임 감소
+		TornadoCoolDown -= 5.0f;
+	}
 }
 
 void AProject_RRCharacter::SaveStatsToGameInstance()
@@ -179,7 +198,10 @@ void AProject_RRCharacter::SaveStatsToGameInstance()
 		GameInstance->PlayerMaxHealth = MaxHealth;
 		GameInstance->PlayerHealth = Health;
 		GameInstance->PlayerAttackDamage = AttackDamage;
-		GameInstance->PlayerAttackDamage = AttackSpeed;
+		GameInstance->PlayerAttackSpeed = AttackSpeed;
+		GameInstance->PlayerDodgeCool = DodgeCoolDown;
+		GameInstance->PlayerWhirlwindCool = WhirlwindCoolDown;
+		GameInstance->PlayerTornadoCool = TornadoCoolDown;
 	}
 }
 
@@ -192,5 +214,8 @@ void AProject_RRCharacter::LoadStatsFromGameInstance()
 		Health = GameInstance->PlayerHealth;
 		AttackDamage = GameInstance->PlayerAttackDamage;
 		AttackSpeed = GameInstance->PlayerAttackSpeed;
+		DodgeCoolDown = GameInstance->PlayerDodgeCool;
+		WhirlwindCoolDown = GameInstance->PlayerWhirlwindCool;
+	    TornadoCoolDown = GameInstance->PlayerTornadoCool;
 	}
 }
