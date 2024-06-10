@@ -45,6 +45,7 @@ bool UFunctionLibrary::CanSeeActor(const UWorld* World,
 	*/
 
 	// Show the Line Trace inside the game
+	DrawDebugLine(World, Start, End, FColor::Red);
 
 	return !Hit.bBlockingHit;
 }
