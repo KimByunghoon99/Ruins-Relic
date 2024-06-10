@@ -6,12 +6,10 @@
 
 UPlayerInstance::UPlayerInstance()
 {
-    // 초기 값 설정
-
     PlayerMaxHealth = 100.0f;  
     PlayerHealth = 100.0f;    
-    PlayerAttackDamage = 10.0f; 
-    PlayerAttackSpeed = 1.0f;
+    PlayerAttackDamage = 20.0f; 
+    PlayerAttackSpeed = 1.0f; 
     PlayerDodgeCool = 4.0f;
     PlayerWhirlwindCool = 20.0f;
     PlayerTornadoCool = 30.0f;
