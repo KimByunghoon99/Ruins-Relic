@@ -14,7 +14,7 @@ AAttack_Enemy::AAttack_Enemy()
 	PrimaryActorTick.bCanEverTick = true;
 
 	SphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere Collision"));
-	SphereComponent->SetSphereRadius(35.f);
+	SphereComponent->SetSphereRadius(20.f);
 	SphereComponent->SetSimulatePhysics(true);
 	SphereComponent->SetNotifyRigidBodyCollision(true);
 
@@ -56,10 +56,6 @@ void AAttack_Enemy::OnHit(UPrimitiveComponent* HitComp,
 		if (StatusComp)
 		{
 			StatusComp->LoseHealth(AttackDamage, this);
-		}
-		else
-		{
-
 		}
 		Destroy();
 	}

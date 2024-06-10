@@ -17,7 +17,7 @@
 // Sets default values
 ABoss::ABoss()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	SightSource = CreateDefaultSubobject<USceneComponent>(TEXT("Sight Source"));
@@ -30,7 +30,7 @@ ABoss::ABoss()
 void ABoss::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called every frame
@@ -62,13 +62,6 @@ void ABoss::Tick(float DeltaTime)
 	}
 
 	bPreviousCanSeePlayer = bCanSeePlayer;
-}
-
-// Called to bind functionality to input
-void ABoss::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }
 
 bool ABoss::LookAtActor(AActor* TargetActor)
@@ -105,17 +98,17 @@ void ABoss::Melee()
 	FVector ForwardVector = GetActorForwardVector();
 	float SpawnDistance = 10.f;
 	FVector SpawnLocation = GetActorLocation() + (ForwardVector * SpawnDistance);
-	FTransform SpawnTransform(GetActorRotation() , SpawnLocation);
+	FTransform SpawnTransform(GetActorRotation(), SpawnLocation);
 
 	FVector ForwardVector2 = GetActorForwardVector();
 	float SpawnDistance2 = 10.f;
 	FVector SpawnLocation2 = GetActorLocation() + (ForwardVector2 * SpawnDistance2);
-	FTransform SpawnTransform2(GetActorRotation() * 1.2 , SpawnLocation2);
+	FTransform SpawnTransform2(GetActorRotation() * 1.2, SpawnLocation2);
 
 	FVector ForwardVector3 = GetActorForwardVector();
 	float SpawnDistance3 = 10.f;
 	FVector SpawnLocation3 = GetActorLocation() + (ForwardVector3 * SpawnDistance3);
-	FTransform SpawnTransform3(GetActorRotation() * 0.8 , SpawnLocation3);
+	FTransform SpawnTransform3(GetActorRotation() * 0.8, SpawnLocation3);
 
 	AAttack_Enemy* Projectile = GetWorld()->SpawnActorDeferred<AAttack_Enemy>(AttackClass, SpawnTransform);
 	AAttack_Enemy* Projectile2 = GetWorld()->SpawnActorDeferred<AAttack_Enemy>(AttackClass, SpawnTransform2);

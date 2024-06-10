@@ -52,9 +52,6 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	class UStatusComponent* StatusComponent;
 
@@ -63,7 +60,7 @@ public:
 	float MaxHealth;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
-	float Health;
+	float Health; 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
 	float AttackDamage; //°ø°Ý·Â
@@ -71,3 +68,4 @@ public:
 	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 };
+

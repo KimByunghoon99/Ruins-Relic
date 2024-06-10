@@ -56,6 +56,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
 	float AttackDamage; //공격력
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
+	float AttackSpeed; // 공격 속도
+
+
 	UFUNCTION()
 	void OnAttackOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
@@ -80,5 +84,15 @@ public:
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
 	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+
+	// 체력 또는 공격력 증가 함수
+	UFUNCTION(BlueprintCallable)
+	void IncreaseRandomStat();
+
+	UFUNCTION(BlueprintCallable)
+	void SaveStatsToGameInstance();
+
+	UFUNCTION(BlueprintCallable)
+	void LoadStatsFromGameInstance();
 };
 

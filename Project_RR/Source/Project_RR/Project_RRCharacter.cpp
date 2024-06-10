@@ -10,7 +10,10 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Kismet/KismetMathLibrary.h"
+#include "Kismet/GameplayStatics.h"
 
+#include "PlayerInstance.h"
 #include "StatusComponent.h"
 #include "Enemy_Dummy.h"
 
@@ -55,20 +58,18 @@ AProject_RRCharacter::AProject_RRCharacter()
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
-
-	// StatusComponent 초기화
-	StatusComponent = CreateDefaultSubobject<UStatusComponent>(TEXT("StatusComponent"));
-
 	Health = 100.0f;
-	MaxHealth = 100.f;
-	AttackDamage = 20.0f; // 기본 공격 데미지
+	MaxHealth = Health;
 
+	AttackDamage = 20.0f; // 기본 공격 데미지
+	AttackSpeed = 1.0f; //기본 공격 속도
 }
 
 void AProject_RRCharacter::BeginPlay()
 {
 	// Call the base class  
 	Super::BeginPlay();
+	LoadStatsFromGameInstance();
 
 	//Add Input Mapping Context
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
@@ -145,3 +146,51 @@ float AProject_RRCharacter::TakeDamage(float DamageAmount, FDamageEvent const& D
 }
 
 
+void AProject_RRCharacter::IncreaseRandomStat()
+{
+	int32 RandomStat = FMath::RandRange(0, 2); // 0 또는 1 중 하나를 무작위로 선택
+	if (RandomStat == 0)
+	{
+		// 체력 증가
+		int32 HealthIncreaseInt = FMath::RandRange(10, 20);
+		float HealthIncrease = static_cast<float>(HealthIncreaseInt);
+		MaxHealth += HealthIncrease;
+		Health = MaxHealth;
+	}
+	else if (RandomStat == 1)
+	{
+		// 공격력 증가
+		int32 AttackIncreaseInt = FMath::RandRange(2, 5);
+		float AttackIncrease = static_cast<float>(AttackIncreaseInt);
+		AttackDamage += AttackIncrease;
+	}
+	else if (RandomStat == 2)
+	{
+		//공격 속도 증가
+		AttackSpeed += 0.25f;
+	}
+}
+
+void AProject_RRCharacter::SaveStatsToGameInstance()
+{
+	UPlayerInstance* GameInstance = Cast<UPlayerInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if (GameInstance)
+	{
+		GameInstance->PlayerMaxHealth = MaxHealth;
+		GameInstance->PlayerHealth = Health;
+		GameInstance->PlayerAttackDamage = AttackDamage;
+		GameInstance->PlayerAttackDamage = AttackSpeed;
+	}
+}
+
+void AProject_RRCharacter::LoadStatsFromGameInstance()
+{
+	UPlayerInstance* GameInstance = Cast<UPlayerInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if (GameInstance)
+	{
+		MaxHealth = GameInstance->PlayerMaxHealth;
+		Health = GameInstance->PlayerHealth;
+		AttackDamage = GameInstance->PlayerAttackDamage;
+		AttackSpeed = GameInstance->PlayerAttackSpeed;
+	}
+}

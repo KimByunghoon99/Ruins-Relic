@@ -37,7 +37,6 @@ void UStatusComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 void UStatusComponent::LoseHealth(float Damage, AActor* DamageCauser)
 {
 	Health -= Damage;
-    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Health after damage: %f"), Health));
 	
 	if (Health <= 0.f)
 	{

@@ -24,10 +24,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	bool GettingHit = false;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"),Category = "Status")
 	float MoveSpeed = 0;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"),Category = "Status")
 	float ComeDistance = 0;
 
 	virtual void Destroyed() override; //파괴시 호출되는 함수
@@ -54,7 +54,7 @@ protected:
 	FTimerHandle ThrowTimerHandle;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
-	float ThrowingInterval = 0.2f;
+	float ThrowingInterval = 0.5f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Status")
 	float ThrowingDelay = 0.5f;

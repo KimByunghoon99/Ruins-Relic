@@ -5,6 +5,7 @@
 #include "Portal.h"
 #include "Project_RRGameMode.h"
 #include "Project_RRCharacter.h"
+#include "PlayerInstance.h"
 
 // Sets default values
 APortal::APortal()
@@ -24,14 +25,16 @@ APortal::APortal()
 void APortal::BeginPlay()
 {
 	Super::BeginPlay();
-	;
 }
 
 
 void APortal::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (OtherActor && OtherActor->IsA(AProject_RRCharacter::StaticClass())) 
+	AProject_RRCharacter* PlayerCharacter = Cast<AProject_RRCharacter>(OtherActor);
+	if (PlayerCharacter)
 	{
+		PlayerCharacter->SaveStatsToGameInstance();
+
 		UGameplayStatics::OpenLevel(this, LevelName);
 	}
 }
