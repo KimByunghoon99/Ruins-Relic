@@ -27,5 +27,14 @@ public:
     UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Player Stats")
     float PlayerAttackSpeed;
 
+    UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Player Stats")
+    float PlayerDodgeCool;
+
+    UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Player Stats")
+    float PlayerWhirlwindCool;
+
+    UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Player Stats")
+    float PlayerTornadoCool;
+
     UPlayerInstance();
 };
