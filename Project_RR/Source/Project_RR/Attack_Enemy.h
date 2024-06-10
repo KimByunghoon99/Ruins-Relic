@@ -23,6 +23,9 @@ public:
 	// Sets default values for this actor's properties
 	AAttack_Enemy();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float LifeSpan = 0;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

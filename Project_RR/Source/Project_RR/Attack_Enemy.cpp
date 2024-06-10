@@ -31,7 +31,7 @@ void AAttack_Enemy::BeginPlay()
 
 	SphereComponent->OnComponentHit.AddDynamic(this, &AAttack_Enemy::OnHit);
 
-	SetLifeSpan(0.1f);
+	SetLifeSpan(LifeSpan);
 }
 
 // Called every frame
